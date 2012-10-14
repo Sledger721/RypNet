@@ -4,11 +4,11 @@ NetAPI By: Sledger721 (All messages must contain a $ and ;. Know that just for d
   -dns.delete(iDNSID,sUrl) - Delete the URL registry.
   -dns.find(iDNSID,sUrl) - Find the ID of the URL.
  RDNT Commands:
-  -rdnt.post(iServID,DATA) - Posts a string to the data stack.
+  -rdnt.post(iServID,sData) - Posts a string to the data stack.
   -rdnt.get(iServID) - Returns the data stack.
   -rdnt.putFile(iServID,sPath,sData) - Creates a file.
   -rdnt.putDir(iServID,sPath) - Creates a directory.
-  -rdnt.rip(iServID,sPath) - Downloads an FTP file. Returns the data of the file.
+  -rdnt.rip(iServID,sPath) - Downloads a file. Returns the data of the file.
   -rdnt.check(iServID,sPath) - Checks for if a file or directory exists at this path. Returns A,B. A is a bool on if it exists, B is a bool on if it's a directory
   -rdnt.obtain(iServID,sSetting) - Gets the data of a certain setting, then returns it.
     -SERVER.ID - Returns the server's ID. This is the only property of rdnt.obtain
