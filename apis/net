@@ -1,0 +1,106 @@
+--NetAPI By: Sledger721 (All messages must contain a $ and ;. Know that just for debug purposes)
+--  DNS Commands:
+--   -DNS.REGISTER(URL,DNSID) - Register the URL.
+--   -DNS.DELETE(URL,DNSID) - Delete the URL registry.
+--   -DNS.FIND(URL,DNSID) - Find the ID of the URL.
+--  RDNT Commands:
+--   -RDNT.POST(DATA) - Posts a string to the data stack.
+--   -RDNT.GET(DATA) - Returns the data stack.
+--   -RDNT.PUT(DATA) - Uploads an FTP file.
+--   -RDNT.RIP(PATH) - Downloads an FTP file.
+--   -RDNT.CHECK(PATH) - Checks for if a file or directory exists at this path. Returns A,B. A is a bool on if it exists, B is a bool on if it's a directory
+--   -RDNT.OBTAIN(SETTING) - Gets the data of a certain setting.
+--     -SERVER.ID - Returns the server's ID.
+--     -Yeah, I know, I need to add more arguments to this call, but, still in Beta :P.
+
+dns={}
+rdnt={}
+
+function split(str, pat) -- Split function, taken from the Lua-Users Wiki.
+   local t = {}  -- NOTE: use {n = 0} in Lua-5.0
+   local fpat = "(.-)" .. pat
+   local last_end = 1
+   local s, e, cap = str:find(fpat, 1)
+   while s do
+      if s ~= 1 or cap ~= "" then
+	 table.insert(t,cap)
+      end
+      last_end = e+1
+      s, e, cap = str:find(fpat, last_end)
+   end
+   if last_end <= #str then
+      cap = str:sub(last_end)
+      table.insert(t, cap)
+   end
+   return t
+end
+function dns.register(url,dnsid)
+	rednet.send(tonumber(dnsid),"$REGISTER;"..url)
+end
+function dns.delete(url,dnsid)
+	rednet.send(tonumber(dnsid),"$DELETE;"..url)
+end
+function dns.find(url,dnsid)
+		rednet.send(tonumber(dnsid),"$FIND;"..url)
+		  while true do
+			ev,id,msg=os.pullEvent("rednet_message")
+			if tostring(id)==dnsid then
+				data={}
+				data=split(msg,";")
+				print(data[1].."DIVIDER (btw, this worked) "..data[2]) -- return id_that_was_found,%TRUE%
+			end
+		end
+end
+
+function rdnt.post(servid,data) -- Add data to the data_stack of the server.
+	rednet.send(tonumber(servid),"$POST;"..data)
+end
+function rdnt.get(servid) -- Retrieve and unserialize the data from the data_stack of the server.
+	rednet.send(tonumber(servid),"$GET;")
+		while true do
+			ev,id,msg=os.pullEvent("rednet_message")
+			if tostring(id)==servid then
+				retval=textutils.unserialize(msg)
+				return retval
+			else
+				return false, "Error in retrieving table"
+			end
+		end
+end
+function rdnt.putFile(servid,path,data) -- Place this file in the server.
+	rednet.send(tonumber(servid),"$PUT;"..path..";"..data)
+end
+function rdnt.putDir(servid,path) -- Uses the same $PUT command, but uses it to create a directory instead of a file.
+	rednet.send(tonumber(servid),"$POST;dir;"..path)
+end
+function rdnt.check(servid,path) -- Checks the path, checking for existance.
+	rednet.send(tonumber(servid),"$CHECK;"..path)
+		while true do
+			id,msg=rednet.receive()
+			if tostring(id)==servid then
+				dat={}
+				dat=split(msg,";")
+					return dat[1],dat[2]
+			end
+		end
+end
+function rdnt.rip(servid,path) -- Rips the file from that path.
+	rednet.send(tonumber(servid),"$RIP;"..path)
+		while true do
+			id,msg=rednet.receive()
+			if tostring(id)==servid then
+					return msg
+			end
+		end
+end
+function rdnt.obtain(servid,cmd) -- Obtains the cmd. The only cmd right now is "SERVER.ID".
+	rednet.send(tonumber(servid),"$OBTAIN;"..cmd)
+		while true do
+			id,msg=rednet.receive()
+			if tostring(id)==servid then
+				return msg
+			end
+		end
+end
+
+
