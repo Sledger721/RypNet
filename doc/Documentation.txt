@@ -5,7 +5,7 @@ NetAPI By: Sledger721 (All messages must contain a $ and ;. Know that just for d
   -dns.find(iDNSID,sUrl) - Find the ID of the URL.
  RDNT Commands:
   -rdnt.post(iServID,DATA) - Posts a string to the data stack.
-  -data_stack = rdnt.get(iServID) - Returns the data stack.
+  -rdnt.get(iServID) - Returns the data stack.
   -rdnt.putFile(iServID,sPath,sData) - Creates a file.
   -rdnt.putDir(iServID,sPath) - Creates a directory.
   -rdnt.rip(iServID,sPath) - Downloads an FTP file. Returns the data of the file.
