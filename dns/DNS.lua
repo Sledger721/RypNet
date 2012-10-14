@@ -11,6 +11,8 @@ rednet.open("top")
 rednet.open("left")
 rednet.open("right")
 rednet.open("back")
+rednet.open("front")
+rednet.open("bottom")
 end
 function init()
 	if fs.exists("dns")==false then

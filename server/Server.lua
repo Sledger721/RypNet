@@ -27,6 +27,8 @@ rednet.open("top")
 rednet.open("left")
 rednet.open("right")
 rednet.open("back")
+rednet.open("front")
+rednet.open("bottom")
 end
 function fileCheck() -- Makes sure that the file structure is all good.
  if fs.exists("server")==false then

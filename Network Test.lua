@@ -7,6 +7,8 @@ function openAll() -- A function to open all ports.
 	rednet.open("left")
 	rednet.open("right")
 	rednet.open("back")
+	rednet.open("front")
+	rednet.open("bottom")
 end
 function test()
 openAll() -- Openning all ports.
